@@ -1,4 +1,5 @@
 ﻿using Books.API.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Books.API.Data;
@@ -8,9 +9,8 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-
+        Database.EnsureCreated();
     }
-
     public DbSet<Category> Categories { get; set; }
     public DbSet<Book> Books { get; set; }
 

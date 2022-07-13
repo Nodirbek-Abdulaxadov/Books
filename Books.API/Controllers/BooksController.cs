@@ -20,10 +20,11 @@ namespace Books.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
-          if (_context.Books == null)
-          {
-              return NotFound();
-          }
+            if (_context.Books == null)
+            {
+                return NotFound();
+            }
+
             return await _context.Books.ToListAsync();
         }
 
@@ -45,8 +46,16 @@ namespace Books.API.Controllers
             return book;
         }
 
+        // GET: api/AllPrice
+        [HttpGet("allprice")]
+        public async Task<IActionResult> AllPrice()
+        {
+            var list = await _context.Books.ToListAsync();
+
+            return Ok(list);
+        }
+
         // PUT: api/Books/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
@@ -77,14 +86,18 @@ namespace Books.API.Controllers
         }
 
         // POST: api/Books
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
-          if (_context.Books == null)
-          {
-              return Problem("Entity set 'BooksAPIContext.Book'  is null.");
-          }
+            if (_context.Books == null)
+            {
+                return Problem("Entity set 'BooksAPIContext.Book'  is null.");
+            }
+            else if (BookExists(book.Name))
+            {
+                return Problem($"{book.Name} already exist!");
+            }
+
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
@@ -111,9 +124,37 @@ namespace Books.API.Controllers
             return NoContent();
         }
 
+        //Generate 1000 books
+        [HttpPost("generate")]
+        public async Task<IActionResult> PostThousandBooks()
+        {
+            Book? book = null;
+            for (int i = 1; i <= 8000; i++)
+            {
+                book = new Book()
+                {
+                    Name = "book - 00" + i,
+                    Author = "Author" + i,
+                    Price = i * 10,
+                    CategoryId = 1,
+                    UrlToBook = ""
+                };
+                _context.Books.Add(book);
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok();
+        }
+
+        [NonAction]
         private bool BookExists(int id)
         {
             return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+        [NonAction]
+        private bool BookExists(string name)
+        {
+            return (_context.Books?.Any(e => e.Name == name)).GetValueOrDefault();
         }
     }
 }
