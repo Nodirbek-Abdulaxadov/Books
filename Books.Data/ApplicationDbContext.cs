@@ -1,8 +1,8 @@
-﻿using Books.API.Models;
+﻿using Books.Data.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-namespace Books.API.Data;
+namespace Books.Data;
 
 public class ApplicationDbContext : DbContext
 {

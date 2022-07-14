@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Books.API.Models;
+namespace Books.Data.Models;
 
 public class Book
 {

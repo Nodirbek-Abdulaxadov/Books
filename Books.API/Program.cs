@@ -1,11 +1,15 @@
-using Books.API.Data;
+using Books.Data;
+using Books.Repository;
+using Books.Repository.Interfaces;
+using Books.Repository.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
+builder.Services.AddTransient<IBookInterface, BookRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Books.Data;
+using Books.Data.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Books.API.Data;
-using Books.API.Models;
 
 namespace Books.API.Controllers
 {
